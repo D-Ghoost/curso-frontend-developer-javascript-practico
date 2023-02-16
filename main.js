@@ -2,22 +2,26 @@ const menuEmail = document.querySelector(".navbar-email")
 const desktopMenu = document.querySelector(".desktop-menu")
 const burgerMenu = document.querySelector(".menu")
 const menuCarrito = document.querySelector(".navbar-shopping-cart")
+const productDetailCloseIcon = document.querySelector(".product-detail-close")
 const mobileMenu = document.querySelector(".mobile-menu")
 // Previsualizacion del carrito
 const shoppingCardContainer = document.querySelector("#shoppingCardContainer")
+const productDetailContainer = document.querySelector("#productDetail")
 const cardsContainer = document.querySelector(".cards-container")
 
 // cuando haga click
 menuEmail.addEventListener('click', toggleDesktopMenu)
 burgerMenu.addEventListener('click', toggleMobileMenu)
 menuCarrito.addEventListener('click', toggleCarrito)
+productDetailContainer.addEventListener('click', closeProductDetailAside)
 
 function toggleDesktopMenu() {
     const isshoppingCardContainerClosed = shoppingCardContainer.classList.contains('inactive')
-    
+    const productDetailClose = productDetailContainer.classList.contains('inactive')
 
-    if (!isshoppingCardContainerClosed) {
+    if (!isshoppingCardContainerClosed || !productDetailClose) {
         shoppingCardContainer.classList.add('inactive')
+        productDetailContainer.classList.add('inactive')
     }
     // classList.toggle -> pone o quita la clase inactive
     desktopMenu.classList.toggle('inactive')
@@ -28,6 +32,12 @@ function toggleMobileMenu() {
 
     if (!isshoppingCardContainerClosed) {
         shoppingCardContainer.classList.add('inactive')
+    }
+
+    const productDetailClose = productDetailContainer.classList.contains('inactive')
+    
+    if (!productDetailClose) {
+        productDetailContainer.classList.add('inactive')
     }
 
     // classList.toggle -> pone o quita la clase inactive
@@ -41,6 +51,12 @@ function toggleCarrito() {
     if (!isMobileMenuClosed || !isDeskMenuClosed) {
         mobileMenu.classList.add('inactive')
         desktopMenu.classList.add('inactive')
+    }
+
+    const productDetailClose = productDetailContainer.classList.contains('inactive')
+    
+    if (!productDetailClose) {
+        productDetailContainer.classList.add('inactive')
     }
 
     shoppingCardContainer.classList.toggle('inactive')
@@ -81,6 +97,20 @@ productList.push({
 </div>
 */
 
+function openProductDetailAside() {
+    const menuEmailEnable = menuEmail.classList.contains("inactive")
+    if(!menuEmailEnable){
+        desktopMenu.classList.add('inactive')
+    }
+    shoppingCardContainer.classList.add('inactive')
+    productDetailContainer.classList.remove('inactive')
+}
+
+function closeProductDetailAside() {
+    productDetailContainer.classList.add('inactive')
+
+}
+
 function renderProducts(arr) {
     
 for (product of arr) {
@@ -90,6 +120,7 @@ for (product of arr) {
     const productImg = document.createElement('img')
     // la primera variable es el atributo a cambiar, la segunda es el valor que tendra el atributo
     productImg.setAttribute('src',product.image)
+    productImg.addEventListener('click',openProductDetailAside)
 
     const productInfo = document.createElement('div')
     productInfo.classList.add('product-info')
